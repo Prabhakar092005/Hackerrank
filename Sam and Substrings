@@ -1,0 +1,44 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <cmath>
+
+using namespace std;
+
+int substrings(string n) {
+    long long M = 1000000007;
+    int N = n.length();
+
+    long long current_sum_ending_at_i = 0;
+    long long total_sum = 0;
+
+    for (int i = 0; i < N; ++i) {
+        long long digit = n[i] - '0';
+        long long next_sum;
+
+        if (i == 0) {
+            next_sum = digit;
+        } else {
+            long long term1 = (current_sum_ending_at_i * 10) % M;
+            long long term2 = (digit * (i + 1)) % M;
+            next_sum = (term1 + term2) % M;
+        }
+
+        current_sum_ending_at_i = next_sum;
+        total_sum = (total_sum + current_sum_ending_at_i) % M;
+    }
+
+    return (int)total_sum;
+}
+
+int main() {
+    string n;
+    if (!(cin >> n)) {
+        return 1;
+    }
+
+    int result = substrings(n);
+    cout << result << endl;
+
+    return 0;
+}
